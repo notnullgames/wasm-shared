@@ -26,9 +26,8 @@ function getImports(host) {
   return out
 }
 
-
-const importObj = getImports(await loadHost())
-const cart = (await WebAssembly.instantiateStreaming(fetch("./build/wasm_shared-cart.wasm"), importObj)).instance.exports
+ 
+const cart = (await WebAssembly.instantiateStreaming(fetch("./build/wasm_shared-cart.wasm"), getImports(await loadHost()))).instance.exports
 
 // call cart's test, which will call host's logtest
 cart.test()
