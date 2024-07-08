@@ -14,12 +14,11 @@ import loadHost from './build/host.mjs'
 function getImports(host) {
   const out = {
     wasi_snapshot_preview1: {
-      args_get(){},
-      args_sizes_get() {
-        return 0
-      },
-      proc_exit(){}
+      args_get() {},
+      args_sizes_get() {},
+      proc_exit() {}
     },
+    
     env: {
       memory: host.wasmMemory
     }
