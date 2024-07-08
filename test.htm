@@ -7,22 +7,30 @@
 </body>
 
 <script type="module">
-// here I use the js for teh host, and the bare wasm for cart
-
-// load emscripten host
 import loadHost from './build/wasm_shared-host.mjs'
-const host = await loadHost()
 
-// cart is a "plain wasm", so set it up with regular browser stuff
-const cart = (await WebAssembly.instantiateStreaming(fetch("./build/wasm_shared-cart.wasm"), {
-  env: {
-    memory: host.wasmMemory,
-    logtest: host._logtest
+
+// this will take an emscripten host, and setup imports for plain-wasm cart
+function getImports(host) {
+  const out = {
+    env: {
+      memory: host.wasmMemory
+    }
   }
-})).instance.exports
+  for (let n of Object.keys(host)) {
+    const m = /^_(.+)/g.exec(n)
+    if (m){
+      out.env[m[1]] = host[n]
+    }
+  }
+  return out
+}
+
+
+const importObj = getImports(await loadHost())
+const cart = (await WebAssembly.instantiateStreaming(fetch("./build/wasm_shared-cart.wasm"), importObj)).instance.exports
 
 // call cart's test, which will call host's logtest
-
 cart.test()
 
 </script>
