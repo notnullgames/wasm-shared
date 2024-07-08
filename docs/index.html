@@ -7,7 +7,7 @@
 </body>
 
 <script type="module">
-import loadHost from './build/host.mjs'
+import loadHost from './host.mjs'
 
 
 // this will take an emscripten host, and setup imports for plain-wasm cart
@@ -33,7 +33,7 @@ function getImports(host) {
 }
 
  
-const cart = (await WebAssembly.instantiateStreaming(fetch("./build/cart.wasm"), getImports(await loadHost()))).instance.exports
+const cart = (await WebAssembly.instantiateStreaming(fetch("./cart.wasm"), getImports(await loadHost()))).instance.exports
 
 // call cart's test, which will call host's logtest
 cart._start()
