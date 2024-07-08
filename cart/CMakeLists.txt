@@ -1,6 +1,11 @@
-# build for carts
-
 cmake_minimum_required (VERSION 3.18)
+
+project(wasm_shared-cart
+  DESCRIPTION "null0 engine experiment: shared memory"
+  HOMEPAGE_URL "https://github.com/notnullgames/wasm-shared"
+  VERSION 0.0.1
+  LANGUAGES C
+)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
