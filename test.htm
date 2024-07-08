@@ -1,0 +1,28 @@
+<head>
+  <title>Shared Mem Wasm Test</title>
+</head>
+
+<body>
+  Check console.
+</body>
+
+<script type="module">
+// here I use the js for teh host, and the bare wasm for cart
+
+// load emscripten host
+import loadHost from './build/wasm_shared-host.mjs'
+const host = await loadHost()
+
+// cart is a "plain wasm", so set it up with regular browser stuff
+const cart = (await WebAssembly.instantiateStreaming(fetch("./build/wasm_shared-cart.wasm"), {
+  env: {
+    memory: host.wasmMemory,
+    logtest: host._logtest
+  }
+})).instance.exports
+
+// call cart's test, which will call host's logtest
+
+cart.test()
+
+</script>
